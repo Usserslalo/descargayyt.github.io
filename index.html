@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Descargador de YouTube</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+        input, button {
+            padding: 10px;
+            margin: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Descargador de YouTube</h1>
+    <input type="text" id="url" placeholder="Ingrese la URL de YouTube" size="50">
+    <button onclick="downloadVideo()">Descargar</button>
+    <p id="message"></p>
+
+    <script>
+        async function downloadVideo() {
+            const url = document.getElementById('url').value;
+            const response = await fetch('/download', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ url })
+            });
+
+            const result = await response.json();
+            const messageElement = document.getElementById('message');
+
+            if (response.ok) {
+                messageElement.textContent = `Descarga exitosa: ${result.filename}`;
+            } else {
+                messageElement.textContent = `Error: ${result.error}`;
+            }
+        }
+    </script>
+</body>
+</html>
